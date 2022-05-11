@@ -13,41 +13,21 @@ const header = document.querySelector("header");
 //Makes reference to placeholder for list elemetns that contains buttons
 const buttonList = document.querySelector(".link-list");
 
-//Function that generates search bar
+//Function that generates html for search bar
 const createSearchComponent = function () {
-  /*Helpers to make function more readable, 
-   code inspiration from: https://teamtreehouse.com/library/refactor-1-create-list-items
-*/
-  const createElement = function (elementName, property, value) {
-    const element = document.createElement(elementName);
-    element[property] = value;
-    return element;
-  };
-
-  const appendToLabel = function (elementName, property, value) {
-    const element = createElement(elementName, property, value);
-    label.appendChild(element);
-    return element;
-  };
-
-  const label = createElement("label", "className", "student-search");
-  label.for = "search";
-
-  appendToLabel("span", "textContent", "Search by name");
-  appendToLabel("input", "id", "search").placeholder = "Search by name";
-
-  const button = appendToLabel("button", "className", "search-button");
-  const img = createElement("img", "alt", "search-btn");
-  img.src = "img/icn-search.svg";
-  button.appendChild(img);
-
-  return label;
+  const html = `
+    <label for="search" class="student-search">
+      <span>Search by name</span>
+      <input id="search" placeholder="Search by name...">
+     <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+</label>
+  `;
+  return html;
 };
 
-//adding the bar component to the header
+//Creating and appending search bar
 const searchComponent = createSearchComponent();
-header.appendChild(searchComponent);
-
+header.insertAdjacentHTML("beforeend", searchComponent);
 //Selecting search bar components
 const searchBar = document.querySelector(".student-search");
 const submitBtn = document.querySelector(".student-search button");
@@ -112,8 +92,6 @@ const showPage = function (list, page) {
   return studentList;
 };
 
-showPage(data, 1);
-
 //Function that adds pagination buttons
 const addPaginationButtons = function (list) {
   if (list.length === 0) {
@@ -142,8 +120,6 @@ const addPaginationButtons = function (list) {
   const firstButton = buttonList.firstElementChild.firstElementChild;
   firstButton.className = "active";
 };
-
-addPaginationButtons(data);
 
 buttonList.addEventListener("click", (event) => {
   const allButtons = buttonList.children;
@@ -180,3 +156,7 @@ submitBtn.addEventListener("click", (event) => {
 });
 //Passing function as a callback
 searchBar.addEventListener("keyup", searchHandler);
+
+//Call functions
+showPage(data, 1);
+addPaginationButtons(data);
